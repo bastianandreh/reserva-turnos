@@ -1,0 +1,7 @@
+{
+  "name": "reserva-turnos",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

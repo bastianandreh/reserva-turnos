@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Reserva de Turnos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Selección de fecha -->
+  <ion-item>
+    <ion-label position="stacked">Fecha</ion-label>
+    <ion-datetime
+      presentation="date"
+      [(ngModel)]="fechaSeleccionada"
+      (ionChange)="onFechaCambiada($event.detail.value)">
+    </ion-datetime>
+  </ion-item>
+
+  <h2 class="ion-margin-top">Horarios disponibles</h2>
+
+  <!-- Lista de turnos -->
+  @if (turnos.length > 0) {
+    <ion-list>
+      @for (turno of turnos; track turno.hora) {
+        <ion-item [class.turno-reservado]="turno.estado === 'Reservado'">
+          <ion-icon
+            slot="start"
+            [name]="turno.estado === 'Disponible' ? 'checkmark-circle-outline' : 'close-circle-outline'"
+            [color]="turno.estado === 'Disponible' ? 'success' : 'medium'">
+          </ion-icon>
+
+          <ion-label>
+            <h3>{{ turno.hora }}</h3>
+            <p>{{ turno.estado }}</p>
+          </ion-label>
+
+          @if (turno.estado === 'Disponible') {
+            <ion-button
+              slot="end"
+              color="primary"
+              (click)="reservarTurno(turno)">
+              Reservar
+            </ion-button>
+          }
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <p>No hay turnos disponibles para esta fecha.</p>
+  }
+
+  <!-- Contador -->
+  @if (turnos.length > 0) {
+    <ion-item lines="none" class="ion-margin-top">
+      <ion-label>
+        <strong>Turnos disponibles: {{ turnosDisponibles }}</strong>
+      </ion-label>
+    </ion-item>
+
+    @if (turnosDisponibles === 0) {
+      <p class="ion-text-center ion-margin-top">
+        No hay turnos disponibles para esta fecha.
+      </p>
+    }
+  }
+
+</ion-content>
